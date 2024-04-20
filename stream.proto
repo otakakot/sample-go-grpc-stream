@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/otakakot/sample-go-grpc-stream/pb";
+
+service Stream {
+    rpc Single(stream SingleRequest) returns (stream SingleResponse);
+    rpc Multiple(stream MultipleRequest) returns (stream MultipleResponse);
+}
+
+message SingleRequest {
+    oneof value {
+        int64 id = 1;
+        Chunk chunk = 2;
+    }
+}
+
+message SingleResponse {
+    oneof value {
+        int64 id = 1;
+        Chunk chunk = 2;
+    }
+}
+
+message MultipleRequest {
+    repeated Value values = 1;
+}
+
+message MultipleResponse {
+    repeated Value values = 1;
+}
+
+message Value {
+    int64 id = 1;
+    Chunk chunk = 2;
+}
+
+message Chunk {
+    bytes data = 1;
+    int64 position = 2;
+}
